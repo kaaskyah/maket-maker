@@ -43,16 +43,17 @@ export const generateDocx = async (layout: PageLayout[]) => {
         if (mime.includes("png")) type = "png";
         else if (mime.includes("gif")) type = "gif";
         else if (mime.includes("bmp")) type = "bmp";
-        return new ImageRun({
+        const imageOptions: any = {
           data: buffer,
           transformation: { width: width * 37.795275591, height: height * 37.795275591 },
-          type: type,
           floating: {
             horizontalPosition: { offset: Math.round(img.x * 360000), relative: HorizontalPositionRelativeFrom.MARGIN },
             verticalPosition: { offset: Math.round(img.y * 360000), relative: VerticalPositionRelativeFrom.MARGIN },
             wrap: { type: TextWrappingType.NONE }
           }
-        });
+        };
+        imageOptions.type = type; // Указываем тип картинки, свойство отсутствует в типах ImageRun
+        return new ImageRun(imageOptions);
       }));
       return {
         properties: {
